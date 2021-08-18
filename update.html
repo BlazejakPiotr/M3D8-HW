@@ -130,18 +130,40 @@
       let productDesc = document.getElementById("description");
       let productBrand = document.getElementById("brand");
       let productImg = document.getElementById("imageUrl");
-      let product = document.getElementById("price");
+      let productPrice = document.getElementById("price");
+
+      // CONVERT INPUTS TO AN OBJECT
+
+      let myObject = {
+        name: "productName",
+        description: "productDesc",
+        brand: "productBrand",
+        imageUrl: "productImg",
+        price: "productPrice",
+      };
 
       // POST FUCTION
-      function sendData() {
+      const sendData = async () => {
+        let response = await fetch(
+          "https://striveschool-api.herokuapp.com/api/product/",
+          {
+            method: "POST",
+            Authorization: {
+              username: "piotr.blazejak@yahoo.com",
+              password: "ziomek1993",
+            },
+            body: JSON.stringify(myObject),
+            headers: new Headers({
+              "Content-Type": "application/json",
+            }),
+          }
+        );
+
         form.addEventListener("submit", function (event) {
           event.preventDefault();
           sendData();
         });
-
-        console.log(productName.value);
-        console.log(productDesc.value);
-      }
+      };
 
       window.onload = () => {
         sendData();
