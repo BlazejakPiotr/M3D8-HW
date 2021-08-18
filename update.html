@@ -90,7 +90,7 @@
       <div class="row">
         <div class="col-12">
           <!-- FORM -->
-          <form>
+          <form onsubmit="sendData(event)">
             <label for="name">Product Name:</label><br />
             <input type="text" id="name" name="name" /><br />
             <label for="description">Product Description:</label><br />
@@ -108,12 +108,25 @@
             <input type="text" id="imageUrl" name="imageUrl" /><br />
             <label for="price">Product Price:</label><br />
             <input type="number" id="price" name="price" /> $<br />
-            <button>Submit</button>
+            <button type="submit">Submit</button>
           </form>
           <!-- END FORM -->
+
+          <!-- DELETE FORM  -->
+          <!-- <form onsubmit="deleteProduct()" class="mt-5">
+            <label for="delete">Product ID:</label><br />
+            <input type="text" id="delete" name="delete" /><button
+              type="submit"
+              class="btn-danger"
+            >
+              DELETE
+            </button>
+          </form> -->
+          <!-- END DELETE FORM -->
         </div>
       </div>
     </div>
+
     <!-- END CONTENT CONTAINER -->
     <!-- BOOTSTRAP SCRIPTS -->
     <script
@@ -124,50 +137,36 @@
     <!-- END BOOSTRAP SCRIPTS -->
     <!-- APP SCRIPTS -->
     <script>
-      // FORM INPUT VALUES
-      let form = document.querySelector("form");
-      let productName = document.getElementById("name");
-      let productDesc = document.getElementById("description");
-      let productBrand = document.getElementById("brand");
-      let productImg = document.getElementById("imageUrl");
-      let productPrice = document.getElementById("price");
-
-      // CONVERT INPUTS TO AN OBJECT
-
-      let myObject = {
-        name: "productName",
-        description: "productDesc",
-        brand: "productBrand",
-        imageUrl: "productImg",
-        price: "productPrice",
-      };
-
       // POST FUCTION
-      const sendData = async () => {
-        let response = await fetch(
+      const sendData = async (event) => {
+        event.preventDefault();
+
+        const product = {
+          name: document.getElementById("name").value,
+          description: document.getElementById("description").value,
+          brand: document.getElementById("brand").value,
+          imageUrl: document.getElementById("imageUrl").value,
+          price: document.getElementById("price").value,
+        };
+
+        const response = await fetch(
           "https://striveschool-api.herokuapp.com/api/product/",
           {
             method: "POST",
-            Authorization: {
-              username: "piotr.blazejak@yahoo.com",
-              password: "ziomek1993",
-            },
-            body: JSON.stringify(myObject),
+            body: JSON.stringify(product),
             headers: new Headers({
               "Content-Type": "application/json",
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTFjZjYyZjJkNTI2MjAwMTViNmRjOTUiLCJpYXQiOjE2MjkyODc5ODMsImV4cCI6MTYzMDQ5NzU4M30.nNXVsU3Xm3rtBjwRiDZJUn8LcZawq-ItVaCq0cX5GZs",
             }),
           }
         );
-
-        form.addEventListener("submit", function (event) {
-          event.preventDefault();
-          sendData();
-        });
       };
 
-      window.onload = () => {
-        sendData();
-      };
+      // const deleteProduct = async (event) => {
+      //   event.preventDefault();
+      //   console.log(document.getElementById("delete").value);
+      // };
     </script>
   </body>
 </html>
